@@ -16,6 +16,10 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#if (FOX_MAJOR==1) && (FOX_MINOR==6) && !defined(FOX_1_6)
+# define FOX_1_6
+#endif
+
 #ifdef FOX_1_6
 # define ONE_SECOND ((FXuint)1000)
 # define PathMatch(pattern,file,flags) FXPath::match(pattern,file,flags)
@@ -96,12 +100,14 @@ bool IsDesktopCurrent(FXMainWindow*tw);
 # define TotalSlotsInDict(d)  ((d)->no())
 # define UsedSlotsInDict(d)   ((d)->used())
 # define ReplaceInDict(d,k,v) ((d)->at(k)=(v))
+# define LookupInDict(d,k)    ((d)->at(k))
 #else
 # define Dictionary FXDict
 # define DictKeyName(d,n)     ((d).key(n))
 # define TotalSlotsInDict(d)  ((d)->size())
 # define UsedSlotsInDict(d)   ((d)->no())
 # define ReplaceInDict(d,k,v) ((d)->replace((k),(v)))
+# define LookupInDict(d,k)    ((d)->find(k))
 #endif
 
 FXID GetNetActiveWindow();

@@ -36,6 +36,10 @@
 #include "intl.h"
 #include "luafx.h"
 
+#if LUA_VERSION_NUM<502
+# define lua_rawlen lua_objlen
+#endif
+
 static FXWindow*main_window=NULL;
 
 static const char*default_title;
@@ -248,7 +252,7 @@ static int choose(lua_State*L) {
   FXString fmsg;
   int i,n;
   luaL_argcheck(L, lua_istable(L,argtbl), argtbl, _("table expected") );
-  n=lua_objlen(L,argtbl);
+  n=lua_rawlen(L,argtbl);
   luaL_argcheck(L, n>0, argtbl, _("table can't be empty"));
   for (i=1;i<=n; i++) {
     lua_rawgeti(L,argtbl,i);
@@ -599,7 +603,7 @@ static int pid(lua_State* L)
 
 
 
-static const struct luaL_reg fx_util_funcs[] = {
+static const struct luaL_Reg fx_util_funcs[] = {
   {"message", message},
   {"confirm", confirm},
   {"input", input},
@@ -620,7 +624,7 @@ static const struct luaL_reg fx_util_funcs[] = {
 
 
 
-const luaL_reg* LuaFxUtils(FXWindow*topwin, const char*exe_name)
+const luaL_Reg* LuaFxUtils(FXWindow*topwin, const char*exe_name)
 {
   default_title=exe_name;
   if (!main_window) { main_window=topwin; }
